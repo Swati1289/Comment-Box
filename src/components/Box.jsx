@@ -4,7 +4,7 @@ import { useState } from "react";
 import Comment from "./Comment";
 import MainComment from "./MainComment";
 
-function Box() {
+function Box(currentUserId) {
   const [localcomment, setLocalComment] = useState([]);
 
   /*useEffect(() => {
@@ -38,33 +38,38 @@ function Box() {
   }, []);
   console.log(localcomment);*/
 
-  /* const comments = [
+  const comments = [
     {
       id: Math.floor(Math.random() * 10),
       user: "Suresh",
-      parentId: null,
+      parentId: 1,
       comment: "first comment",
+      dateCreated: new Date().getTime(),
       userImg:
         "https://play-lh.googleusercontent.com/Zo6-6_sxZz6E_gVBYUfLQpU6HpYUcRUmPml9sIwtg-D1p25b5EkJfuVANJXUmZIfhKI=w526-h296-rw",
       createdAt: new Date().getDate(),
     },
   ];
-  useEffect(() => {
+  /*useEffect(() => {
     localStorage.setItem("links", JSON.stringify(comments));
-  }, []);*/
-
-  useEffect(() => {
-    if (localcomment.length > 0) {
-      localStorage.setItem("links", JSON.stringify(localcomment));
-    }
   }, []);
+
+  /*localStorage.setItem("links", JSON.stringify(localcomment));*/
+  useEffect(() => {
+    localcomment.length &&
+      localStorage.setItem("links", JSON.stringify(localcomment));
+
+    if (!localStorage.getItem("links") && localcomment.length === 0) {
+      localStorage.setItem("links", JSON.stringify(comments));
+    }
+  }, [localcomment]);
 
   const returnComment = (text, parentId = null, user = "Intercontinental") => {
     const curDate = new Date().getTime();
     console.log(curDate);
 
     return {
-      id: Math.random().toString(36).substr(2, 9),
+      id: 1 /*Math.random().toString(36).substr(2, 9),*/,
       comment: text,
       parentId: parentId,
       user: user,
@@ -83,20 +88,21 @@ function Box() {
     return returnData;
   };
 
-  const addReply = (id) => {
+  /*const addReply = (id) => {
     const replyToComment = returnReplyComment(id);
     replyToComment.parentId = id;
     return replyToComment;
     //console.log("reply", replyToComment);
-  };*/
-
-  const getCurrentId = (id) => {
+  };
+*/
+  /*const getCurrentId = (id) => {
+    //const currentComment = returnReplyComment(id);
     const returnData = JSON.parse(localStorage.getItem("links"));
     const [curIdData] = returnData.filter((data) => data.id === id);
     console.log(curIdData);
     const curId = curIdData.id;
     console.log(curId);
-  };
+  };*/
 
   let data;
   const addComment = (text, parentId) => {
@@ -114,7 +120,8 @@ function Box() {
     console.log("newComment:", newComment);
   };
 
-  const newData = JSON.parse(localStorage.getItem("links"));
+  const newData = JSON.parse(localStorage.getItem("links")) || [];
+
   const rootData = newData.filter((data) => data.parentId === null);
 
   console.log(newData);
@@ -125,7 +132,12 @@ function Box() {
         {console.log("length", newData.length)}
         {rootData.length > 0
           ? rootData.map((root, i) => (
-              <Comment root={root} key={i} handleReply={getCurrentId} />
+              <Comment
+                root={root}
+                key={i}
+                addComment={addComment}
+                currentUserId={currentUserId}
+              />
             ))
           : ""}
       </div>
