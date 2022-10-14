@@ -1,10 +1,24 @@
 import React, { useEffect, useState } from "react";
 import MainComment from "./MainComment";
 
-function Comment({ root, id, addComment, currentUserId, parentId = null }) {
+function Comment({
+  root,
+  id,
+  replies,
+  fetchReplies,
+  addComment,
+  parentId = null,
+}) {
   const [currentComment, setCurrentComment] = useState();
-  const reply = currentComment && currentComment.id === root.id;
+  const Isreply = currentComment && currentComment.id === root.id;
+  console.log("reply", replies);
 
+  /* if (replies && Isreply) {
+    const rep = root.reply;
+    replies.map((re) => rep.push(re));
+
+    console.log("rrrrrrrrrrr", rep);
+  }*/
   /* const getCurrentId = (id) => {
     //const currentComment = returnReplyComment(id);
     const returnData = JSON.parse(localStorage.getItem("links"));
@@ -14,20 +28,12 @@ function Comment({ root, id, addComment, currentUserId, parentId = null }) {
     return curId;
     // console.log(curId);
   };*/
-  const getReplies = (commentId) => {
-    return JSON.parse(localStorage.getItem("links")).filter(
-      (local) => local.parentId === commentId
-    );
-
-    /*const realData = dataGot.filter((data) => (data.id = commentId));
-    console.log("real", realData);*/
-  };
 
   /*const idcur = getCurrentId(root.id);
   console.log(idcur);*/
-  const replies = getReplies(root.id);
+
   const replyId = parentId ? parentId : root.id;
-  console.log("r", replyId);
+  console.log("r", replies);
 
   const currentDate = new Date().getTime();
 
@@ -51,14 +57,16 @@ function Comment({ root, id, addComment, currentUserId, parentId = null }) {
           </button>
         </div>
       </div>
-
-      {replies.length > 0 && (
+      {Isreply && (
+        <MainComment handleSbmit={(text) => addComment(text, replyId)} id={1} />
+      )}
+      {replies && replies.length > 0 && (
         <div className="replies">
           {replies.map((reply) => (
             <Comment
               root={reply}
               key={root.id}
-              currentUserId={currentUserId}
+              replies={[]}
               parentId={root.id}
             />
           ))}

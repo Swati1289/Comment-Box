@@ -54,7 +54,7 @@ function Box(currentUserId) {
     localStorage.setItem("links", JSON.stringify(comments));
   }, []);
 
-  /*localStorage.setItem("links", JSON.stringify(localcomment));*/
+  localStorage.setItem("links", JSON.stringify(localcomment));*/
   useEffect(() => {
     localcomment.length &&
       localStorage.setItem("links", JSON.stringify(localcomment));
@@ -69,7 +69,7 @@ function Box(currentUserId) {
     console.log(curDate);
 
     return {
-      id: 1 /*Math.random().toString(36).substr(2, 9),*/,
+      id: Math.random().toString(36).substr(2, 9),
       comment: text,
       parentId: parentId,
       user: user,
@@ -124,6 +124,15 @@ function Box(currentUserId) {
 
   const rootData = newData.filter((data) => data.parentId === null);
 
+  const fetchReplies = (Id) => {
+    return JSON.parse(localStorage.getItem("links")).filter(
+      (local) => local.parentId === Id
+    );
+
+    /*const realData = dataGot.filter((data) => (data.id = commentId));
+    console.log("real", realData);*/
+  };
+
   console.log(newData);
   return (
     <>
@@ -135,8 +144,10 @@ function Box(currentUserId) {
               <Comment
                 root={root}
                 key={i}
+                replies={fetchReplies(root.id)}
+                fetchReplies={fetchReplies}
                 addComment={addComment}
-                currentUserId={currentUserId}
+                parentId={root.parentId}
               />
             ))
           : ""}
