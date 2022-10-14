@@ -63,12 +63,7 @@ function Comment({
       {replies && replies.length > 0 && (
         <div className="replies">
           {replies.map((reply) => (
-            <Comment
-              root={reply}
-              key={root.id}
-              replies={[]}
-              parentId={root.id}
-            />
+            <Comment root={reply} key={root.id} parentId={root.id} />
           ))}
         </div>
       )}
