@@ -7,18 +7,19 @@ function Comment({
   replies,
   fetchReplies,
   addComment,
+  newData,
   parentId = null,
 }) {
   const [currentComment, setCurrentComment] = useState();
   const Isreply = currentComment && currentComment.id === root.id;
   console.log("reply", replies);
 
-  /* if (replies && Isreply) {
+  /* useEffect(() => {
     const rep = root.reply;
-    replies.map((re) => rep.push(re));
-
+    replies.forEach((reply) => rep.push(reply));
     console.log("rrrrrrrrrrr", rep);
-  }*/
+  }, []);
+
   /* const getCurrentId = (id) => {
     //const currentComment = returnReplyComment(id);
     const returnData = JSON.parse(localStorage.getItem("links"));
@@ -49,6 +50,7 @@ function Comment({
           </span>
 
           <button
+            className="rep--button"
             onClick={() => {
               setCurrentComment({ id: root.id });
             }}
@@ -58,12 +60,24 @@ function Comment({
         </div>
       </div>
       {Isreply && (
-        <MainComment handleSbmit={(text) => addComment(text, replyId)} id={1} />
+        <MainComment
+          handleSbmit={(text) => addComment(text, replyId)}
+          id={1}
+          setCurrentComment={setCurrentComment}
+        />
       )}
       {replies && replies.length > 0 && (
         <div className="replies">
           {replies.map((reply) => (
-            <Comment root={reply} key={root.id} parentId={root.id} />
+            <Comment
+              root={reply}
+              key={root.id}
+              replies={fetchReplies(reply.id)}
+              fetchReplies={fetchReplies}
+              addComment={addComment}
+              // newData={newData}
+              parentId={reply.id}
+            />
           ))}
         </div>
       )}

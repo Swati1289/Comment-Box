@@ -116,7 +116,7 @@ function Box(currentUserId) {
     //console.log(localcomment);
     const newComment = JSON.parse(localStorage.getItem("links"));
     setLocalComment(newComment);
-
+    //window.location.reload();
     console.log("newComment:", newComment);
   };
 
@@ -147,6 +147,7 @@ function Box(currentUserId) {
                 replies={fetchReplies(root.id)}
                 fetchReplies={fetchReplies}
                 addComment={addComment}
+                // newData={localcomment}
                 parentId={root.parentId}
               />
             ))

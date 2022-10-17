@@ -1,9 +1,9 @@
 //import React, { useEffect } from "react";
 import "./style.css";
-import { FaPaperPlane } from "react-icons/fa";
+import { FaPaperPlane, FaRegMoneyBillAlt } from "react-icons/fa";
 import { useState } from "react";
 
-function MainComment({ handleSbmit }) {
+function MainComment({ handleSbmit, setCurrentComment }) {
   const [text, setText] = useState("");
 
   const onsubmit = (e) => {
@@ -14,6 +14,9 @@ function MainComment({ handleSbmit }) {
     console.log(text);
     e.target.reset();
     setText("");
+
+    setCurrentComment(null);
+
     //console.log("text:", text);
   };
   const isInputDisabled = text.length === 0;
