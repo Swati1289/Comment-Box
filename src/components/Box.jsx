@@ -38,7 +38,7 @@ function Box(currentUserId) {
   }, []);
   console.log(localcomment);*/
 
-  const comments = [
+  /*const comments = [
     {
       id: Math.floor(Math.random() * 10),
       user: "Suresh",
@@ -60,12 +60,13 @@ function Box(currentUserId) {
       localStorage.setItem("links", JSON.stringify(localcomment));
 
     if (!localStorage.getItem("links") && localcomment.length === 0) {
-      localStorage.setItem("links", JSON.stringify(comments));
+      localStorage.setItem("links", JSON.stringify([]));
     }
   }, [localcomment]);
 
   const returnComment = (text, parentId = null, user = "Intercontinental") => {
     const curDate = new Date().getTime();
+    localStorage.setItem("date", curDate);
     console.log(curDate);
 
     return {
@@ -73,7 +74,7 @@ function Box(currentUserId) {
       comment: text,
       parentId: parentId,
       user: user,
-      dateCreated: curDate,
+      dateCreated: localStorage.getItem("date"),
       reply: [],
       userImg:
         "https://play-lh.googleusercontent.com/Zo6-6_sxZz6E_gVBYUfLQpU6HpYUcRUmPml9sIwtg-D1p25b5EkJfuVANJXUmZIfhKI=w526-h296-rw",
